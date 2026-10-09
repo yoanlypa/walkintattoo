@@ -29,3 +29,12 @@ Qué hace
 - Formulario que abre WhatsApp al 661 13 63 24 con el mensaje ya escrito.
 - Cada diseño y cada estilo tiene su botón de WhatsApp con mensaje propio.
 - Mapa, cómo llegar, horario con el día de hoy marcado y datos para Google (schema.org).
+
+Galería de inspiración (fotos de Unsplash)
+- 14 fotos gratuitas de Unsplash, enlazadas desde su servidor (images.unsplash.com).
+  La licencia de Unsplash permite usarlas gratis, también en webs comerciales.
+- Cada foto lleva el crédito del fotógrafo y el aviso de que son referencias,
+  no trabajos del estudio. No quites ese aviso mientras sean fotos de stock.
+- Lo ideal cuando la web sea oficial: sustituirlas por fotos de sus propios tatuajes
+  (busca "inspo-item" en index.html; cada foto es un bloque <figure>).
+- Si alguna foto no carga, se oculta sola; si no carga ninguna, la sección desaparece.

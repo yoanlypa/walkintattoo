@@ -567,6 +567,70 @@ html:not(.js) .splash { display: none; }
 .demo-pill.is-hidden, .demo-pill.is-away { opacity: 0; transform: translateY(10px); pointer-events: none; }
 
 /* ==========================================================================
+   Inspiration gallery (Unsplash reference photos) + lightbox
+   ========================================================================== */
+.inspo-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px 56px; flex-wrap: wrap; }
+.inspo-lead { margin: 0; max-width: 46ch; color: var(--cream-2); text-wrap: pretty; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 44px 0 24px; }
+.filters button {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
+  padding: 10px 15px; border-radius: 999px; border: 1px solid var(--line-2); background: transparent; color: var(--cream-2);
+  transition: background .3s, color .3s, border-color .3s;
+}
+.filters button:hover { border-color: var(--cream-2); color: var(--cream); }
+.filters button.is-active { background: var(--cream); border-color: var(--cream); color: var(--bg); }
+.inspo-grid { columns: 4 230px; column-gap: 14px; }
+.inspo-item { position: relative; break-inside: avoid; margin: 0 0 14px; border-radius: 16px; overflow: hidden; background: var(--bg-3); border: 1px solid var(--line); isolation: isolate; }
+.inspo-item.is-hidden, .inspo-item.is-broken { display: none; }
+.inspo-item::after { content: ""; position: absolute; inset: 50% 0 0; background: linear-gradient(transparent, rgba(8,7,6,.85)); pointer-events: none; z-index: 1; }
+.inspo-open { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.inspo-open img { display: block; width: 100%; height: auto; aspect-ratio: var(--ar, 4/5); object-fit: cover; filter: saturate(.92); transition: transform 1.1s var(--ease-out), filter .6s; }
+.inspo-cap { position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin: 0; pointer-events: none; }
+.inspo-cap a { pointer-events: auto; }
+.inspo-meta { display: grid; gap: 2px; }
+.inspo-ref { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--cream-2); }
+.inspo-tag { font-family: var(--serif); font-style: italic; font-size: 1.1rem; line-height: 1.1; color: var(--cream); font-variation-settings: "opsz" 72, "SOFT" 100; }
+.inspo-credit { font-size: 10.5px; color: rgba(242,235,218,.72); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55%; }
+.inspo-credit:hover { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
+.inspo-want {
+  position: absolute; top: 12px; right: 12px; z-index: 2; cursor: pointer;
+  padding: 8px 13px; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent, var(--cream));
+  font-size: 12.5px; font-weight: 600; box-shadow: 0 10px 24px -10px rgba(0,0,0,.7);
+  opacity: 0; transform: translateY(-6px); transition: opacity .35s var(--ease-out), transform .35s var(--ease-out);
+}
+@media (hover: hover) {
+  .inspo-item:hover .inspo-open img { transform: scale(1.06); filter: saturate(1.05); }
+  .inspo-item:hover .inspo-want, .inspo-item:focus-within .inspo-want { opacity: 1; transform: none; }
+}
+@media (hover: none) { .inspo-want { opacity: 1; transform: none; } }
+.inspo-note { margin: 22px 0 0; font-size: 13px; color: var(--cream-3); max-width: 72ch; }
+
+.lightbox { width: min(1100px, 94vw); max-width: none; max-height: 94vh; padding: 0; border: 0; background: transparent; color: var(--cream); overflow: visible; }
+.lightbox[open] { display: grid; place-items: center; }
+.lightbox::backdrop { background: rgba(8,7,6,.92); }
+.lb-fig { margin: 0; display: grid; gap: 16px; justify-items: center; }
+.lb-fig img { display: block; max-width: 100%; max-height: 74vh; width: auto; height: auto; border-radius: 16px; background: var(--bg-3); }
+.lb-fig figcaption { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; }
+.lb-fig .inspo-credit { max-width: none; font-size: 12px; }
+.lb-btn { position: fixed; z-index: 2; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line-2); background: rgba(13,11,10,.8); color: var(--cream); font-size: 20px; line-height: 1; cursor: pointer; display: grid; place-items: center; transition: border-color .25s, background .25s; }
+.lb-btn:hover { border-color: var(--cream-2); background: rgba(13,11,10,.95); }
+.lb-close { top: 16px; right: 16px; font-size: 24px; }
+.lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
+@media (max-width: 899px) {
+  .lb-prev, .lb-next { top: auto; bottom: 16px; transform: none; }
+  .lb-fig img { max-height: 66vh; }
+}
+@media (max-width: 560px) {
+  .inspo-grid { columns: 2; column-gap: 10px; }
+  .inspo-item { margin-bottom: 10px; border-radius: 12px; }
+  .inspo-cap { left: 8px; right: 8px; bottom: 8px; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .inspo-credit { max-width: 100%; font-size: 9.5px; }
+  .inspo-tag { font-size: .98rem; }
+  .inspo-want { top: 8px; right: 8px; padding: 6px 10px; font-size: 11px; }
+}
+
+/* ==========================================================================
    Responsive
    ========================================================================== */
 @media (max-width: 1080px) {
@@ -646,6 +710,7 @@ html:not(.js) .splash { display: none; }
     <a href="#estudio" data-i18n="nav.studio">Estudio</a>
     <a href="#trabajos" data-i18n="nav.work">Trabajos</a>
     <a href="#estilos" data-i18n="nav.styles">Estilos</a>
+    <a href="#inspiracion" data-i18n="nav.ideas">Inspiración</a>
     <a href="#reservar" data-i18n="nav.book">Reservar</a>
     <a href="#visita" data-i18n="nav.visit">Visítanos</a>
   </nav>
@@ -1027,6 +1092,185 @@ html:not(.js) .splash { display: none; }
   </div>
 </section>
 
+<!-- ============================== INSPIRATION ============================== -->
+<section class="section inspo" id="inspiracion" style="padding-top:0">
+  <div class="wrap">
+    <div class="inspo-head">
+      <div>
+        <p class="kicker" data-reveal><b>✦</b><span data-i18n="ins.k">Inspiración</span></p>
+        <h2 class="h2" data-reveal data-i18n-html="ins.h">¿Buscas <em>ideas</em>?</h2>
+      </div>
+      <p class="inspo-lead" data-reveal data-i18n="ins.p">Una selección de fotos de referencia para inspirarte. Elige la que más te guste y la usamos como punto de partida para dibujar una pieza que sea solo tuya.</p>
+    </div>
+    <div class="filters" data-filters data-reveal>
+      <button type="button" class="is-active" aria-pressed="true" data-filter="all" data-i18n="ins.all">Todo</button>
+      <button type="button" aria-pressed="false" data-filter="fine" data-i18n="ins.fine">Fine line</button>
+      <button type="button" aria-pressed="false" data-filter="real" data-i18n="ins.real">Realismo</button>
+      <button type="button" aria-pressed="false" data-filter="color" data-i18n="ins.color">Color</button>
+      <button type="button" aria-pressed="false" data-filter="black" data-i18n="ins.black">Blackwork</button>
+      <button type="button" aria-pressed="false" data-filter="letter" data-i18n="ins.letter">Lettering</button>
+    </div>
+    <div class="inspo-grid" data-inspo>
+      <figure class="inspo-item" data-cat="real" data-n="01" data-full="https://images.unsplash.com/photo-1522687533888-1078974f88ec?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:4/5">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 01">
+          <img src="https://images.unsplash.com/photo-1522687533888-1078974f88ec?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750" srcset="https://images.unsplash.com/photo-1522687533888-1078974f88ec?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=500 400w, https://images.unsplash.com/photo-1522687533888-1078974f88ec?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750 600w, https://images.unsplash.com/photo-1522687533888-1078974f88ec?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1125 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="750" loading="lazy" decoding="async" alt="Tatuaje realista de un león en el antebrazo" data-i18n-alt="ins.a1">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 01</span><span class="inspo-tag" data-i18n="ins.real">Realismo</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/sDXjyJqT_Yo?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Najib Kalil · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="color" data-n="02" data-full="https://images.unsplash.com/photo-1712027858623-feaadeec9c0e?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:1/1">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 02">
+          <img src="https://images.unsplash.com/photo-1712027858623-feaadeec9c0e?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=600" srcset="https://images.unsplash.com/photo-1712027858623-feaadeec9c0e?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=400 400w, https://images.unsplash.com/photo-1712027858623-feaadeec9c0e?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=600 600w, https://images.unsplash.com/photo-1712027858623-feaadeec9c0e?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=900 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="600" loading="lazy" decoding="async" alt="Tatuaje a color de una rana en el brazo" data-i18n-alt="ins.a2">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 02</span><span class="inspo-tag" data-i18n="ins.color">Color</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/Ib_b1Lx0Qo0?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Andres Medina · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="fine" data-n="03" data-full="https://images.unsplash.com/photo-1595246344716-5c9b563f11fe?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:4/5">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 03">
+          <img src="https://images.unsplash.com/photo-1595246344716-5c9b563f11fe?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750" srcset="https://images.unsplash.com/photo-1595246344716-5c9b563f11fe?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=500 400w, https://images.unsplash.com/photo-1595246344716-5c9b563f11fe?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750 600w, https://images.unsplash.com/photo-1595246344716-5c9b563f11fe?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1125 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="750" loading="lazy" decoding="async" alt="Tatuaje fine line de sol, luna y ojo en el costado" data-i18n-alt="ins.a3">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 03</span><span class="inspo-tag" data-i18n="ins.fine">Fine line</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/bLWaYQlfaZ0?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Content Pixie · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="black" data-n="04" data-full="https://images.unsplash.com/photo-1627960630431-270d04164a22?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:4/5">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 04">
+          <img src="https://images.unsplash.com/photo-1627960630431-270d04164a22?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750" srcset="https://images.unsplash.com/photo-1627960630431-270d04164a22?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=500 400w, https://images.unsplash.com/photo-1627960630431-270d04164a22?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750 600w, https://images.unsplash.com/photo-1627960630431-270d04164a22?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1125 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="750" loading="lazy" decoding="async" alt="Tatuaje blackwork de un ojo en la mano" data-i18n-alt="ins.a4">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 04</span><span class="inspo-tag" data-i18n="ins.black">Blackwork</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/jLHHWhwpB2s?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Thamara Maura · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="letter" data-n="05" data-full="https://images.unsplash.com/photo-1570168983832-8989dae1522e?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:1/1">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 05">
+          <img src="https://images.unsplash.com/photo-1570168983832-8989dae1522e?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=600" srcset="https://images.unsplash.com/photo-1570168983832-8989dae1522e?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=400 400w, https://images.unsplash.com/photo-1570168983832-8989dae1522e?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=600 600w, https://images.unsplash.com/photo-1570168983832-8989dae1522e?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=900 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="600" loading="lazy" decoding="async" alt="Tatuaje de lettering en el brazo" data-i18n-alt="ins.a5">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 05</span><span class="inspo-tag" data-i18n="ins.letter">Lettering</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/JPl0GPNoeoM?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Agathè Lov · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="real" data-n="06" data-full="https://images.unsplash.com/photo-1514466219469-a6a5c8525beb?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:4/5">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 06">
+          <img src="https://images.unsplash.com/photo-1514466219469-a6a5c8525beb?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750" srcset="https://images.unsplash.com/photo-1514466219469-a6a5c8525beb?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=500 400w, https://images.unsplash.com/photo-1514466219469-a6a5c8525beb?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750 600w, https://images.unsplash.com/photo-1514466219469-a6a5c8525beb?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1125 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="750" loading="lazy" decoding="async" alt="Tatuaje pequeño y realista de un pájaro en el hombro" data-i18n-alt="ins.a6">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 06</span><span class="inspo-tag" data-i18n="ins.real">Realismo</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/LkrDSNCADXM?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Annie Spratt · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="color" data-n="07" data-full="https://images.unsplash.com/photo-1601848714157-d845bb5c11ff?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:1/1">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 07">
+          <img src="https://images.unsplash.com/photo-1601848714157-d845bb5c11ff?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=600" srcset="https://images.unsplash.com/photo-1601848714157-d845bb5c11ff?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=400 400w, https://images.unsplash.com/photo-1601848714157-d845bb5c11ff?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=600 600w, https://images.unsplash.com/photo-1601848714157-d845bb5c11ff?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=900 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="600" loading="lazy" decoding="async" alt="Tatuajes tradicionales a color con golondrina y serpiente" data-i18n-alt="ins.a7">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 07</span><span class="inspo-tag" data-i18n="ins.color">Color</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/kZuIc5Jtmfc?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Stories & Ink Tattoo Care · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="fine" data-n="08" data-full="https://images.unsplash.com/photo-1484707361897-1d9fa176c87e?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:3/4">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 08">
+          <img src="https://images.unsplash.com/photo-1484707361897-1d9fa176c87e?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=800" srcset="https://images.unsplash.com/photo-1484707361897-1d9fa176c87e?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=533 400w, https://images.unsplash.com/photo-1484707361897-1d9fa176c87e?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=800 600w, https://images.unsplash.com/photo-1484707361897-1d9fa176c87e?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1200 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="800" loading="lazy" decoding="async" alt="Tatuajes pequeños a juego en pareja" data-i18n-alt="ins.a8">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 08</span><span class="inspo-tag" data-i18n="ins.fine">Fine line</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/pYd6_Iw8TpM?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Elizabeth Tsung · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="real" data-n="09" data-full="https://images.unsplash.com/photo-1562962230-16e4623d36e6?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:3/4">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 09">
+          <img src="https://images.unsplash.com/photo-1562962230-16e4623d36e6?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=800" srcset="https://images.unsplash.com/photo-1562962230-16e4623d36e6?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=533 400w, https://images.unsplash.com/photo-1562962230-16e4623d36e6?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=800 600w, https://images.unsplash.com/photo-1562962230-16e4623d36e6?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1200 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="800" loading="lazy" decoding="async" alt="Tatuaje floral en negro y gris" data-i18n-alt="ins.a9">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 09</span><span class="inspo-tag" data-i18n="ins.real">Realismo</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/pIltvcnqsfU?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Eduardo Vaccari · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="black" data-n="10" data-full="https://images.unsplash.com/photo-1562379825-415aea84ebcf?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:4/5">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 10">
+          <img src="https://images.unsplash.com/photo-1562379825-415aea84ebcf?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750" srcset="https://images.unsplash.com/photo-1562379825-415aea84ebcf?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=500 400w, https://images.unsplash.com/photo-1562379825-415aea84ebcf?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750 600w, https://images.unsplash.com/photo-1562379825-415aea84ebcf?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1125 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="750" loading="lazy" decoding="async" alt="Tatuajes blackwork en el cuello y los dedos" data-i18n-alt="ins.a10">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 10</span><span class="inspo-tag" data-i18n="ins.black">Blackwork</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/SBrxqx8Vvhg?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Steven Erixon · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="fine" data-n="11" data-full="https://images.unsplash.com/photo-1585745422697-1b42b98aac14?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:1/1">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 11">
+          <img src="https://images.unsplash.com/photo-1585745422697-1b42b98aac14?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=600" srcset="https://images.unsplash.com/photo-1585745422697-1b42b98aac14?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=400 400w, https://images.unsplash.com/photo-1585745422697-1b42b98aac14?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=600 600w, https://images.unsplash.com/photo-1585745422697-1b42b98aac14?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=900 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="600" loading="lazy" decoding="async" alt="Tatuaje de línea con el boceto de una escultura en la mano" data-i18n-alt="ins.a11">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 11</span><span class="inspo-tag" data-i18n="ins.fine">Fine line</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/9rYvzzNcEjg?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Eric Vieira · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="letter" data-n="12" data-full="https://images.unsplash.com/photo-1547754145-ef9ff306e3f3?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:4/5">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 12">
+          <img src="https://images.unsplash.com/photo-1547754145-ef9ff306e3f3?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750" srcset="https://images.unsplash.com/photo-1547754145-ef9ff306e3f3?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=500 400w, https://images.unsplash.com/photo-1547754145-ef9ff306e3f3?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750 600w, https://images.unsplash.com/photo-1547754145-ef9ff306e3f3?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1125 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="750" loading="lazy" decoding="async" alt="Tatuaje de lettering fino en el brazo" data-i18n-alt="ins.a12">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 12</span><span class="inspo-tag" data-i18n="ins.letter">Lettering</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/B3JaMOFsydc?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Antonino Visalli · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="real" data-n="13" data-full="https://images.unsplash.com/photo-1540174053853-1cc5d1fa8814?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:4/5">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 13">
+          <img src="https://images.unsplash.com/photo-1540174053853-1cc5d1fa8814?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750" srcset="https://images.unsplash.com/photo-1540174053853-1cc5d1fa8814?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=500 400w, https://images.unsplash.com/photo-1540174053853-1cc5d1fa8814?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750 600w, https://images.unsplash.com/photo-1540174053853-1cc5d1fa8814?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1125 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="750" loading="lazy" decoding="async" alt="Tatuaje realista de un ángel en la espalda" data-i18n-alt="ins.a13">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 13</span><span class="inspo-tag" data-i18n="ins.real">Realismo</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/ftoD84_RRdM?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Darren Nunis · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+      <figure class="inspo-item" data-cat="fine" data-n="14" data-full="https://images.unsplash.com/photo-1595862645152-2f32bd80ce1d?auto=format&amp;q=80&amp;w=1600" data-reveal style="--ar:4/5">
+        <button class="inspo-open" type="button" data-inspo-open aria-label="Ref. 14">
+          <img src="https://images.unsplash.com/photo-1595862645152-2f32bd80ce1d?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750" srcset="https://images.unsplash.com/photo-1595862645152-2f32bd80ce1d?auto=format&amp;fit=crop&amp;q=70&amp;w=400&amp;h=500 400w, https://images.unsplash.com/photo-1595862645152-2f32bd80ce1d?auto=format&amp;fit=crop&amp;q=70&amp;w=600&amp;h=750 600w, https://images.unsplash.com/photo-1595862645152-2f32bd80ce1d?auto=format&amp;fit=crop&amp;q=70&amp;w=900&amp;h=1125 900w" sizes="(max-width: 560px) 48vw, (max-width: 1080px) 32vw, 300px" width="600" height="750" loading="lazy" decoding="async" alt="Tatuaje fine line con marco de sello en el antebrazo" data-i18n-alt="ins.a14">
+        </button>
+        <figcaption class="inspo-cap">
+          <span class="inspo-meta"><span class="inspo-ref">Ref. 14</span><span class="inspo-tag" data-i18n="ins.fine">Fine line</span></span>
+          <a class="inspo-credit" href="https://unsplash.com/photos/5Nl7KNR_jlE?utm_source=walk_ink_demo&amp;utm_medium=referral" target="_blank" rel="noopener">Marina Abrosimova · Unsplash</a>
+        </figcaption>
+        <button class="inspo-want" type="button" data-want data-i18n="ins.want">Quiero algo así</button>
+      </figure>
+    </div>
+    <p class="inspo-note" data-i18n="ins.note">Las fotos de esta sección son imágenes de referencia de Unsplash, no trabajos del estudio. Están aquí para que nos enseñes qué estilo te gusta.</p>
+  </div>
+</section>
+
+<dialog class="lightbox" data-lightbox aria-label="Inspiración">
+  <button class="lb-btn lb-close" type="button" data-lb-close aria-label="Cerrar">×</button>
+  <button class="lb-btn lb-prev" type="button" data-lb-prev aria-label="Anterior">←</button>
+  <figure class="lb-fig">
+    <img data-lb-img alt="">
+    <figcaption>
+      <span class="inspo-ref" data-lb-ref></span>
+      <span class="inspo-tag" data-lb-tag></span>
+      <a class="inspo-credit" data-lb-credit target="_blank" rel="noopener"></a>
+      <button class="btn btn-primary btn-sm" type="button" data-lb-want data-i18n="ins.want">Quiero algo así</button>
+    </figcaption>
+  </figure>
+  <button class="lb-btn lb-next" type="button" data-lb-next aria-label="Siguiente">→</button>
+</dialog>
+
 <!-- ============================== 04 ARTISTS ============================== -->
 <section class="section" id="artistas" style="padding-top:0">
   <div class="wrap">
@@ -1329,12 +1573,39 @@ html:not(.js) .splash { display: none; }
     "closed": "Closed", "visit.dir": "Get directions", "visit.call": "Call",
     "foot.studio": "The studio", "foot.tag": "Tattoo studio · Benalmádena, Málaga", "foot.contact": "Contact",
     "foot.hours": "Wed–Fri 16:00–22:00 · Sat–Sun 17:00–22:00 · Mon–Tue closed",
+    "nav.ideas": "Inspiration",
+    "ins.k": "Inspiration",
+    "ins.h": "Looking for <em>ideas</em>?",
+    "ins.p": "A selection of reference photos to get you inspired. Pick your favourite and we'll use it as the starting point to draw a piece that's truly yours.",
+    "ins.all": "All",
+    "ins.fine": "Fine line",
+    "ins.real": "Realism",
+    "ins.color": "Colour",
+    "ins.black": "Blackwork",
+    "ins.letter": "Lettering",
+    "ins.want": "I want something like this",
+    "ins.note": "The photos in this section are reference images from Unsplash, not the studio's own work. They're here to help you show us the style you like.",
+    "ins.a1": "Realistic lion tattoo on the forearm",
+    "ins.a2": "Colour frog tattoo on the arm",
+    "ins.a3": "Fine-line sun, moon and eye tattoo on the side",
+    "ins.a4": "Blackwork eye tattoo on the hand",
+    "ins.a5": "Script lettering tattoo on the arm",
+    "ins.a6": "Small realistic bird tattoo on the shoulder",
+    "ins.a7": "Colour traditional tattoos with a swallow and a snake",
+    "ins.a8": "Small matching tattoos for two",
+    "ins.a9": "Black and grey floral tattoo",
+    "ins.a10": "Blackwork neck and finger tattoos",
+    "ins.a11": "Line tattoo of a sculpture sketch on the hand",
+    "ins.a12": "Fine script tattoo on the upper arm",
+    "ins.a13": "Realistic angel back piece",
+    "ins.a14": "Fine-line stamp-frame tattoo on the forearm",
     "foot.demo": "Design proposal · demo version", "pill": "Preview · proposal for Walk Ink"
   };
 
   var TXT = {
     es: {
       today: "Hoy", tomorrow: "mañana",
+      wantRef: "Me gusta la referencia nº {n} de vuestra galería ({s}). Me gustaría algo parecido: ",
       days: ["el domingo", "el lunes", "el martes", "el miércoles", "el jueves", "el viernes", "el sábado"],
       open: "Abierto ahora · hasta las {c}", later: "Cerrado · hoy abrimos a las {o}", next: "Cerrado · abrimos {d} a las {o}",
       waHello: "Hola Walk Ink 👋 Me gustaría pedir cita para un tatuaje.",
@@ -1345,6 +1616,7 @@ html:not(.js) .splash { display: none; }
     },
     en: {
       today: "Today", tomorrow: "tomorrow",
+      wantRef: "I like reference no. {n} from your gallery ({s}). I'd like something similar: ",
       days: ["on Sunday", "on Monday", "on Tuesday", "on Wednesday", "on Thursday", "on Friday", "on Saturday"],
       open: "Open now · until {c}", later: "Closed · opens today at {o}", next: "Closed · opens {d} at {o}",
       waHello: "Hi Walk Ink 👋 I'd like to book a tattoo appointment.",
@@ -1391,6 +1663,7 @@ html:not(.js) .splash { display: none; }
     $$("[data-i18n]").forEach(function (el) { var k = el.getAttribute("data-i18n"); if (!(k in ES)) ES[k] = el.textContent.trim(); });
     $$("[data-i18n-html]").forEach(function (el) { var k = el.getAttribute("data-i18n-html"); if (!(k in ES)) ES[k] = el.innerHTML.trim(); });
     $$("[data-i18n-ph]").forEach(function (el) { var k = el.getAttribute("data-i18n-ph"); if (!(k in ES)) ES[k] = el.getAttribute("placeholder"); });
+    $$("[data-i18n-alt]").forEach(function (el) { var k = el.getAttribute("data-i18n-alt"); if (!(k in ES)) ES[k] = el.getAttribute("alt"); });
   }
   function applyLang(next) {
     lang = next === "en" ? "en" : "es";
@@ -1401,6 +1674,7 @@ html:not(.js) .splash { display: none; }
       if (el.hasAttribute("data-split")) splitWords(el);
     });
     $$("[data-i18n-ph]").forEach(function (el) { el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
+    $$("[data-i18n-alt]").forEach(function (el) { el.setAttribute("alt", t(el.getAttribute("data-i18n-alt"))); });
     $$("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
     window.dispatchEvent(new CustomEvent("langchange"));
   }
@@ -1703,6 +1977,93 @@ html:not(.js) .splash { display: none; }
   }
 
   /* ------------------------------------------------------------------ */
+  /* Inspiration gallery: filters, lightbox, "I want something like it" */
+  /* ------------------------------------------------------------------ */
+  function initInspo() {
+    var grid = $("[data-inspo]");
+    if (!grid) return;
+    var items = $$(".inspo-item", grid);
+    var section = grid.closest("section");
+    function broken(it) {
+      it.classList.add("is-broken");
+      if (items.every(function (x) { return x.classList.contains("is-broken"); }) && section) section.style.display = "none";
+    }
+    items.forEach(function (it) {
+      var im = $("img", it);
+      im.addEventListener("error", function () { broken(it); });
+      if (im.complete && im.naturalWidth === 0 && im.getAttribute("src")) broken(it);
+    });
+
+    $$("[data-filter]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var f = b.getAttribute("data-filter");
+        $$("[data-filter]").forEach(function (x) { var on = x === b; x.classList.toggle("is-active", on); x.setAttribute("aria-pressed", String(on)); });
+        items.forEach(function (it) {
+          var show = f === "all" || it.getAttribute("data-cat") === f;
+          it.classList.toggle("is-hidden", !show);
+          if (show) it.classList.add("is-revealed");
+        });
+      });
+    });
+
+    function want(it) {
+      var form = $("[data-form]"), card = $("[data-form-card]");
+      if (!form) return;
+      var ta = form.elements.idea;
+      var pre = fill(TXT[lang].wantRef, { n: it.getAttribute("data-n"), s: $(".inspo-tag", it).textContent.trim() });
+      if (ta.dataset.pre && ta.value.indexOf(ta.dataset.pre) === 0) ta.value = ta.value.slice(ta.dataset.pre.length);
+      ta.value = pre + ta.value;
+      ta.dataset.pre = pre;
+      if (card) card.classList.remove("is-sent");
+      closeLb();
+      var target = $("#reservar");
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 70, behavior: "smooth" });
+      setTimeout(function () { try { ta.focus({ preventScroll: true }); ta.setSelectionRange(ta.value.length, ta.value.length); } catch (e) {} }, 900);
+    }
+    $$("[data-want]", grid).forEach(function (b) { b.addEventListener("click", function () { want(b.closest(".inspo-item")); }); });
+
+    var dlg = $("[data-lightbox]"), lbImg = $("[data-lb-img]"), list = [], idx = 0, current = null;
+    function visible() { return items.filter(function (it) { return !it.classList.contains("is-hidden") && !it.classList.contains("is-broken"); }); }
+    function show(it) {
+      current = it;
+      var thumb = $("img", it);
+      lbImg.src = thumb.currentSrc || thumb.src;
+      lbImg.alt = thumb.alt;
+      var full = new Image();
+      full.onload = function () { if (current === it) lbImg.src = full.src; };
+      full.src = it.getAttribute("data-full");
+      $("[data-lb-ref]").textContent = "Ref. " + it.getAttribute("data-n");
+      $("[data-lb-tag]").textContent = $(".inspo-tag", it).textContent;
+      var cr = $(".inspo-credit", it), lc = $("[data-lb-credit]");
+      lc.textContent = cr.textContent; lc.href = cr.href;
+    }
+    function openLb(it) {
+      list = visible(); idx = Math.max(0, list.indexOf(it)); show(list[idx]);
+      if (dlg.showModal) { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute("open", "");
+      document.body.style.overflow = "hidden";
+    }
+    function closeLb() {
+      if (!dlg || !dlg.open) return;
+      if (dlg.close) dlg.close(); else dlg.removeAttribute("open");
+      document.body.style.overflow = "";
+    }
+    function step(d) { if (!list.length) return; idx = (idx + d + list.length) % list.length; show(list[idx]); }
+    $$("[data-inspo-open]", grid).forEach(function (b) { b.addEventListener("click", function () { openLb(b.closest(".inspo-item")); }); });
+    $("[data-lb-close]").addEventListener("click", closeLb);
+    $("[data-lb-prev]").addEventListener("click", function () { step(-1); });
+    $("[data-lb-next]").addEventListener("click", function () { step(1); });
+    $("[data-lb-want]").addEventListener("click", function () { if (current) want(current); });
+    dlg.addEventListener("click", function (e) { if (e.target === dlg) closeLb(); });
+    dlg.addEventListener("close", function () { document.body.style.overflow = ""; });
+    window.addEventListener("keydown", function (e) {
+      if (!dlg.open) return;
+      if (e.key === "ArrowRight") step(1);
+      else if (e.key === "ArrowLeft") step(-1);
+      else if (e.key === "Escape") closeLb();
+    });
+  }
+
+  /* ------------------------------------------------------------------ */
   /* Mobile sticky CTA + demo pill + year                                */
   /* ------------------------------------------------------------------ */
   function initMobileCta() {
@@ -1739,6 +2100,7 @@ html:not(.js) .splash { display: none; }
     safe(initTilt, "initTilt");
     safe(initFlips, "initFlips");
     safe(initForm, "initForm");
+    safe(initInspo, "initInspo");
     safe(initMobileCta, "initMobileCta");
     safe(initDemoPill, "initDemoPill");
     safe(initYear, "initYear");
