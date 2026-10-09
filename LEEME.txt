@@ -1,0 +1,31 @@
+WALK INK TATTOOSTUDIO · WEB DEMO
+================================
+
+Contenido
+- index.html  → la web completa (HTML, CSS y JS en un solo archivo)
+- .htaccess   → caché correcta en Hostinger/Apache (súbelo junto al index)
+
+Antes de enviársela
+- Confirma que los artistas son Mira y Eddy, y sus especialidades (sección 04).
+- Si tienes fotos de sus tatuajes (Instagram), mejor: la demo con su trabajo vende más.
+
+Cuando pase a ser la web oficial (buscar "DEMO" en index.html)
+1. Borrar la línea <meta name="robots" content="noindex, nofollow">.
+2. Borrar el bloque <div class="demo-pill">…</div>.
+3. Quitar la nota "Diseños de muestra · aquí irán las fotos…" (clase showcase-note).
+4. Cambiar el texto del pie "Propuesta de diseño · versión demo".
+5. Cambiar los dibujos de la sección Trabajos por fotos reales:
+   dentro de cada <div class="work-art">, sustituir el <svg>…</svg> por
+   <img src="fotos/01.webp" alt="Tatuaje fine line de una polilla" style="width:100%;height:100%;object-fit:cover">
+6. Cambiar las iniciales M / E por fotos de los artistas (clase portrait).
+
+Subir
+- Hostinger: arrastra index.html y .htaccess a public_html.
+- Funciona también abriendo index.html con doble clic.
+
+Qué hace
+- Español/inglés automático según el idioma del móvil del cliente (botón ES/EN).
+- Estado "Abierto ahora / Cerrado" en tiempo real con el horario de Madrid.
+- Formulario que abre WhatsApp al 661 13 63 24 con el mensaje ya escrito.
+- Cada diseño y cada estilo tiene su botón de WhatsApp con mensaje propio.
+- Mapa, cómo llegar, horario con el día de hoy marcado y datos para Google (schema.org).
